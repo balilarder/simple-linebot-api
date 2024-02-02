@@ -58,5 +58,28 @@ def insert_into_mongo(user_id, user_message, timestamp):
     mycollection.insert_one(message.__dict__)   # Add a document into mongodb
 
 
+@app.route("/broadcast", methods=['POST'])
+def broadcast():
+    '''
+    request body: json:
+    {"message":"MESSAGE_TO_BROADCAST"}
+    '''
+    # parse the request body
+    parameter = request.get_json()
+    try:
+        broadcast_message = parameter['message']
+    except:
+        app.logger.info('Parse request body failed. json format is {"message": "MESSAGE_TO_BROADCAST"}')    
+
+    
+    try:
+        response = line_bot_api.broadcast(TextSendMessage(text=broadcast_message))
+        print(str(response), response.__dict__)
+        return 'Succeed'
+    except:
+        app.logger.info("Broadcast failed.")
+
+
+
 if __name__ == "__main__":
     app.run()

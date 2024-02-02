@@ -25,3 +25,8 @@
 * Verify the Webhook in Line Developer [image]
 * launch the mongodb: `brew services start mongodb-community`
 * Send a message and save it. [image]
+
+
+### Commit #5
+* Create a API broadcasting a message to all friends to this channel.
+* Use POST method with the message in the request body. [image]
