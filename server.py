@@ -79,7 +79,37 @@ def broadcast():
     except:
         app.logger.info("Broadcast failed.")
 
+@app.route("/all_messages", methods=['POST'])
+def all_messages():
+    '''
+    request body: json:
+    {"user_id":"SPECIFIC_USERID"}
+    '''
+    # parse the request body
+    parameter = request.get_json()
+    try:
+        user_id = parameter['user_id']
+    except:
+        app.logger.info('Parse request body failed. json format is {"user_id":"SPECIFIC_USERID"}')    
 
+    
+    try:
+        # Fetch all message given a user.
+        mydb = myclient[db_name]
+        mycollection = mydb[collection_name]
+        messages = mycollection.find({"user_id": user_id})
+
+        replies = []
+        for message in messages:
+
+            reply = f"* {message['user_message']}: {message['timestamp'].strftime('%Y/%m/%d, %H:%M:%S')}"
+            replies.append(reply)
+
+        # send to that user
+        line_bot_api.push_message(user_id, TextSendMessage(text='\n'.join(replies)))
+        return 'Succeed'
+    except:
+        app.logger.info("Broadcast failed.")
 
 if __name__ == "__main__":
     app.run()

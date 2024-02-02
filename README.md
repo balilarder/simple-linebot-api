@@ -30,3 +30,9 @@
 ### Commit #5
 * Create a API broadcasting a message to all friends to this channel.
 * Use POST method with the message in the request body. [image]
+
+
+### Commit #6
+* Create an API to push_message to a specific user.
+* specify the userid in the request body.
+* The messages include all user's message stored before and the timestamps. [image]
